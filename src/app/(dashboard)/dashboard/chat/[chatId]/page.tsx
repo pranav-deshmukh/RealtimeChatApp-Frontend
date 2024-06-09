@@ -78,7 +78,6 @@ const Page: FC<PageProps> = ({ params }: PageProps) => {
 
   return (
     <div className='flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)]'>
-      {/* ... existing code ... */}
       <div className='flex flex-col leading-tight'>
         <div className='text-xl flex items-center'>
           <span className='text-gray-700 mr-3 font-semibold'>{targetUserName}</span>

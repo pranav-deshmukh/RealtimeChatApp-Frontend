@@ -149,7 +149,6 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            {/* <li>chats that this user has </li> */}
             <AllChats userID={userId} />
 
             <li>
