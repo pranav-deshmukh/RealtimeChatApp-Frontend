@@ -13,6 +13,7 @@ import FriendRequestSidebarOptions from "@/components/FriendRequestSidebarOption
 import AllChats from "@/components/AllChats";
 import {io} from "socket.io-client";
 import { useSocketContext } from "@/context";
+import { SearchBar } from "@/components/SearchBar";
 
 
 
@@ -26,6 +27,7 @@ interface MyResponse {
   email: string;
   name: string;
   friendRequests:number
+  friends:[]
 }
 
 interface SidebarOption {
@@ -56,6 +58,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
   const [friendRequests, setFriendRequests] = useState(0);
+  const [friends, setFriends] = useState([]);
   const {socket, onlineUsers} = useSocketContext();
 
 
@@ -85,11 +88,12 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             Authorization: `Bearer ${storedToken}`,
           },
         });
-        // console.log(response.data.userId)
-        setUserId(response.data.userId)
+        console.log("User data",response.data);
+        setUserId(response.data.userId);
         setUserName(response.data.name);
         setEmail(response.data.email);
-        setFriendRequests(response.data.friendRequests)
+        setFriendRequests(response.data.friendRequests);
+        setFriends(response.data.friends);
         // console.log('userId',response.data.userId)
 
     // console.log("Socket connected:", newSocket.id); 
@@ -132,11 +136,13 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     
     <div className="w-full flex h-screen">
       <Toaster richColors closeButton position="top-right" theme="light" />
-      <div className="hidden md:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
+      <div className="hidden md:flex h-full w-full max-w-sm grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
         <Link href="/dashboard" className="flex h-16 shrink-0 items-center">
           <Icons.Logo className="h-8 w-auto text-indigo-600" />
         </Link>
-
+        <div>
+          <SearchBar friends={friends}/>
+        </div>
         <div className="text-xs font-semibold leading-6 text-gray-400">
           Your chats
         </div>

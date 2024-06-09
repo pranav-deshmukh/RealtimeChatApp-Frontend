@@ -5,7 +5,7 @@ import axios from "axios";
 import { Toaster, toast } from "sonner";
 import { useState, useEffect } from "react";
 import { useSocketContext } from "@/context";
-import Loading from "@/app/(dashboard)/dashboard/requests/loading"; // Assuming Loading is a component
+import Loading from "@/app/(dashboard)/dashboard/requests/loading"; 
 
 
 export default function AllChats({ userID }) {
@@ -20,16 +20,13 @@ export default function AllChats({ userID }) {
         const response = await axios.get(`http://localhost:3000/api/v1/chats/${userID}`);
         console.log(response);
 
-        // Extract the desired member from the response and set it in chatsArr
         setChatsArr(response.data.map(chat => chat.members.find(member => member.userId !== userID)));
-        setLoading(false); // Update loading state when data is fetched
+        setLoading(false); 
       } catch (error) {
-        // Handle errors
         console.error('Error fetching data:', error);
         const response = error.response;
         if (response) {
           const errorMessage = response.data.message || "An unknown error occurred";
-          // toast.error(`Error: ${errorMessage}`);
         }
         setLoading(false);
       }
