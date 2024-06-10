@@ -1,21 +1,19 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { FC, ReactNode, useEffect, useState } from "react";
 import { Icon, Icons } from "@/components/Icons";
 import { Image } from "lucide-react";
 import SignOutButton from "@/components/SignOutButton";
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import { Toaster, toast } from "sonner";
 
 import FriendRequestSidebarOptions from "@/components/FriendRequestSidebarOptions";
 import AllChats from "@/components/AllChats";
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import { useSocketContext } from "@/context";
 import { SearchBar } from "@/components/SearchBar";
-
-
 
 interface LayoutProps {
   children: ReactNode;
@@ -26,8 +24,8 @@ interface MyResponse {
   userId: string;
   email: string;
   name: string;
-  friendRequests:number
-  friends:[]
+  friendRequests: number;
+  friends: [];
 }
 
 interface SidebarOption {
@@ -46,49 +44,51 @@ const sidebarOptions: SidebarOption[] = [
   },
 ];
 
-
-
 const Layout: FC<LayoutProps> = ({ children }) => {
-    const [errorTimeout, setErrorTimeout] = useState(null);
+  const [errorTimeout, setErrorTimeout] = useState(null);
   const router = useRouter();
   const handleReload = () => {
     router.refresh();
   };
-  const [userName, setUserName] = useState('');
-  const [userId, setUserId] = useState('');
-  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
   const [friendRequests, setFriendRequests] = useState(0);
   const [friends, setFriends] = useState([]);
-  const {socket, onlineUsers} = useSocketContext();
-
+  const { socket, onlineUsers } = useSocketContext();
 
   // useEffect(()=>{
   //   const newSocket = io("http://localhost:4000");
   //   setSocket(newSocket);
-  //   // console.log("Socket connected:", newSocket.id); 
+  //   // console.log("Socket connected:", newSocket.id);
 
   //   return ()=>{
   //     newSocket.disconnect();
   //   }
   // },[])
 
-  useEffect(()=>{
-    console.log("socket",socket)
-    console.log(onlineUsers)
-    if(socket===null) return
-    socket.emit("addNewUser", userId)
-  },[socket, userId]);
+  useEffect(() => {
+    console.log("socket", socket);
+    console.log(onlineUsers);
+    if (socket === null) return;
+    socket.emit("addNewUser", userId);
+  }, [socket, userId]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const storedToken = typeof window !== 'undefined' ? localStorage.getItem('jwt') : null;
-        const response = await axios.post<MyResponse>('http://localhost:3000/api/v1/users/getUser', { token: storedToken }, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        });
-        console.log("User data",response.data);
+        const storedToken =
+          typeof window !== "undefined" ? localStorage.getItem("jwt") : null;
+        const response = await axios.post<MyResponse>(
+          "http://localhost:3000/api/v1/users/getUser",
+          { token: storedToken },
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
+          }
+        );
+        console.log("User data", response.data);
         setUserId(response.data.userId);
         setUserName(response.data.name);
         setEmail(response.data.email);
@@ -96,52 +96,57 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         setFriends(response.data.friends);
         // console.log('userId',response.data.userId)
 
-    // console.log("Socket connected:", newSocket.id); 
-    
-    // return ()=>{
-    //   newSocket.disconnect();
-    // }
-    // console.log(friendRequests)
+        // console.log("Socket connected:", newSocket.id);
 
-        
+        // return ()=>{
+        //   newSocket.disconnect();
+        // }
+        // console.log(friendRequests)
       } catch (error) {
-        if(axios.isAxiosError(error)){
+        if (axios.isAxiosError(error)) {
           const response = error.response;
-          if(response){
-            const errorMessage = (response.data).message|| "An unknown error occured"
+          if (response) {
+            const errorMessage =
+              response.data.message || "An unknown error occured";
             toast.error(`Error: ${errorMessage}`);
-            if(response.data.status=="fail"){
-
-                  const timeoutId = setTimeout(() => {
+            if (response.data.status == "fail") {
+              const timeoutId = setTimeout(() => {
                 void router.push("/");
               }, 2000);
-              setErrorTimeout(timeoutId)
+              setErrorTimeout(timeoutId);
             }
           }
-          }
-        console.error('Error fetching data:', error);
+        }
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, []);
 
+  const signOut = () => {
+    if (localStorage.getItem("jwt")) {
+      console.log("signOut");
+      localStorage.removeItem("jwt");
+    }
+    setTimeout(()=>{
 
-
-
+      router.push('/');
+    },1500)
+  };
 
   // console.log("Online Users:", onlineUsers)
 
   return (
-    
     <div className="w-full flex h-screen">
       <Toaster richColors closeButton position="top-right" theme="light" />
       <div className="hidden md:flex h-full w-full max-w-sm grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
         <Link href="/dashboard" className="flex h-16 shrink-0 items-center">
-          <Icons.Logo className="h-8 w-auto text-indigo-600" />
+          <Icons.Logo className="h-8 w-auto text-indigo-600 mr-2" />{" "}
+          <h1 className="text-lg font-medium">We chat</h1>
         </Link>
         <div>
-          <SearchBar friends={friends}/>
+          <SearchBar friends={friends} />
         </div>
         <div className="text-xs font-semibold leading-6 text-gray-400">
           Your chats
@@ -175,42 +180,43 @@ const Layout: FC<LayoutProps> = ({ children }) => {
                   );
                 })}
                 <li onClick={handleReload}>
-                    <FriendRequestSidebarOptions
+                  <FriendRequestSidebarOptions
                     sessionId={""}
-                    initialUnseenRequestCount={friendRequests}/>
+                    initialUnseenRequestCount={friendRequests}
+                  />
                 </li>
-
               </ul>
             </li>
 
             <li className="-mx-6 mt-auto flex items-center">
-                <div className='flex flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900'>
-                 <div className='relative h-8 w-8 bg-gray-50'>
-                    {/* <Image
+              <div className="flex flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
+                <div className="relative h-8 w-8 bg-gray-50">
+                  {/* <Image
                     // fill
                     referrerPolicy='no-referrer'
                     className='rounded-full'
                     alt='Your profile picture'
                   /> */}
-                 </div>
-                  
-                <span className='sr-only'>Your profile</span>
-                <div className='flex flex-col'>
-                  <span aria-hidden='true'>{userName}</span>
-                  <span className='text-xs text-zinc-400' aria-hidden='true'>
-                   {email}
+                </div>
+
+                <span className="sr-only">Your profile</span>
+                <div className="flex flex-col">
+                  <span aria-hidden="true">{userName}</span>
+                  <span className="text-xs text-zinc-400" aria-hidden="true">
+                    {email}
                   </span>
                 </div>
-                
-
-                </div>
-                <SignOutButton className='h-full aspect-square' />
+              </div>
+              <button onClick={() => signOut()}>
+                <SignOutButton
+                  className="h-full aspect-square"
+                />
+              </button>
             </li>
-
           </ul>
         </nav>
       </div>
-      <aside className='max-h-screen container py-16 md:py-12 w-full'>
+      <aside className="max-h-screen container py-16 md:py-12 w-full">
         {children}
       </aside>
     </div>

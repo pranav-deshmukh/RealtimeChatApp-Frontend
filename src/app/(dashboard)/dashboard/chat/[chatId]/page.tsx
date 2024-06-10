@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Toaster, toast } from "sonner";
 import { useParams } from 'next/navigation';
 import Messages from "@/components/Messages";
+import { useSocketContext } from "@/context";
+
 
 interface PageProps {
   params: {
@@ -25,6 +27,7 @@ const Page: FC<PageProps> = ({ params }: PageProps) => {
   const [friendRequests, setFriendRequests] = useState(0);
   const [targetUserEmail, setTargetUserEmail] = useState('');
   const [targetUserName, setTargetUserName] = useState('');
+  const {socket, onlineUsers} = useSocketContext();
 
   useEffect(() => {
     const fetchData = async () => {

@@ -18,7 +18,7 @@ export default function AllChats({ userID }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/api/v1/chats/${userID}`);
-        console.log(response);
+        console.log("All chats",response);
 
         setChatsArr(response.data.map(chat => chat.members.find(member => member.userId !== userID)));
         setLoading(false); 
