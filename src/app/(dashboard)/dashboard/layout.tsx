@@ -124,16 +124,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     fetchData();
   }, []);
 
-  const signOut = () => {
-    if (localStorage.getItem("jwt")) {
-      console.log("signOut");
-      localStorage.removeItem("jwt");
-    }
-    setTimeout(()=>{
-
-      router.push('/');
-    },1500)
-  };
+  
 
   // console.log("Online Users:", onlineUsers)
 
@@ -207,11 +198,11 @@ const Layout: FC<LayoutProps> = ({ children }) => {
                   </span>
                 </div>
               </div>
-              <button onClick={() => signOut()}>
+             
                 <SignOutButton
                   className="h-full aspect-square"
                 />
-              </button>
+              
             </li>
           </ul>
         </nav>

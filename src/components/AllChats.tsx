@@ -35,7 +35,7 @@ export default function AllChats({ userID }) {
     fetchData();
   }, [userID]);
 
-  const handleChatClick = (memberID) => {
+  const handleChatClick = (memberID:string) => {
     router.push(`/dashboard/chat/${memberID}`);
   };
   console.log("UsersOnlline", onlineUsers)
