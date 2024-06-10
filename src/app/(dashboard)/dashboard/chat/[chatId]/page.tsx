@@ -73,7 +73,7 @@ const Page: FC<PageProps> = ({ params }: PageProps) => {
   }, [userId, chatId]);
 
   if (!chatData) {
-    return <div>Loading...</div>;
+    return <div className="text-xl font-semibold">Loading...</div>;
   }
 
   return (
