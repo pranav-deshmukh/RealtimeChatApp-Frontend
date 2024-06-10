@@ -61,12 +61,13 @@ export const SearchBar = ({ friends }:FriendsProps) => {
         value={query}
         onChange={handleInputChange}
         placeholder="Search friends..."
+        className="w-full rounded-sm"
       />
       {
         query&&
       <ul>
         {filteredFriends.map((friend, index) => (
-          <li key={index} onClick={()=>handleClick(friend)}>{friend}</li>
+          <li className="mt-2 p-2 text-sm " key={index} onClick={()=>handleClick(friend)}>{friend}</li>
         ))}
       </ul>
       }
