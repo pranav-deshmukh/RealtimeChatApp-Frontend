@@ -45,12 +45,12 @@ export default function AllChats({ userID }) {
       {loading ? (
         <Loading />
       ) : userID ? (
-        <ul role='list' className='max-h-[25rem] overflow-y-auto -mx-2 space-y-1 border-b-2'>
+        <ul role='list' className='h-[15rem] overflow-y-auto -mx-2 space-y-1 border-b-2 '>
           {chatsArr.map((member, index) => (
-            <li key={index}>
+            <li key={index} className="w-[90%]">
               <button
                 onClick={() => handleChatClick(member.userId)}
-                className='text-gray-700 hover:text-indigo-600 hover:bg-gray-50 group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'>
+                className='text-gray-700 hover:text-indigo-600 hover:bg-gray-100 group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full'>
                 {member.name}
               <span className="text-[8px]">{
                 onlineUsers?.some((user)=>user.userId === member.userId) ? "user-online" : ""
@@ -58,6 +58,7 @@ export default function AllChats({ userID }) {
               <div className={onlineUsers?.some((user)=>user.userId === member.userId) ? "w-3 h-3 bg-green-600 hover:bg-green-700 grid place-items-center rounded-full transition hover:shadow-md" : ""}></div>
               </button>
             </li>
+            
           ))}
         </ul>
       ) : null}

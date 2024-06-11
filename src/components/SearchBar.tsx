@@ -55,7 +55,7 @@ export const SearchBar = ({ friends }:FriendsProps) => {
   };
 
   return (
-    <div>
+    <div className="relative">
       <input
         type="text"
         value={query}
@@ -65,7 +65,7 @@ export const SearchBar = ({ friends }:FriendsProps) => {
       />
       {
         query&&
-      <ul>
+      <ul className="z-30 absolute bg-white w-full border rounded-sm">
         {filteredFriends.map((friend, index) => (
           <li className="mt-2 p-2 text-sm " key={index} onClick={()=>handleClick(friend)}>{friend}</li>
         ))}

@@ -6,7 +6,7 @@ interface dashboardProps {
  
 const dashboard: FC<dashboardProps> = () => {
     return ( 
-        <div>Dashboard</div>
+        <div></div>
      );
 }
  
