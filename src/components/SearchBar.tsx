@@ -61,7 +61,7 @@ export const SearchBar = ({ friends }:FriendsProps) => {
         value={query}
         onChange={handleInputChange}
         placeholder="Search friends..."
-        className="w-full rounded-sm"
+        className="w-full rounded-sm border-gray-300"
       />
       {
         query&&

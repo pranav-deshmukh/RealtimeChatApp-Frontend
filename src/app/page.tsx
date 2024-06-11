@@ -131,7 +131,7 @@ export default function Home() {
             </span>
           </div>
           <Input
-            type="confirmPassword"
+            type="password"
             placeholder="confirmPassword"
             name="confirmPassword"
             id="confirmPassword"

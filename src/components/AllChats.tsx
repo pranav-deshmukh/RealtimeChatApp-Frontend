@@ -6,6 +6,7 @@ import { Toaster, toast } from "sonner";
 import { useState, useEffect } from "react";
 import { useSocketContext } from "@/context";
 import Loading from "@/app/(dashboard)/dashboard/requests/loading"; 
+import { Divide } from "lucide-react";
 
 
 export default function AllChats({ userID }) {
@@ -46,7 +47,7 @@ export default function AllChats({ userID }) {
         <Loading />
       ) : userID ? (
         <ul role='list' className='h-[15rem] overflow-y-auto -mx-2 space-y-1 border-b-2 '>
-          {chatsArr.map((member, index) => (
+          {chatsArr.length>0? chatsArr.map((member, index) => (
             <li key={index} className="w-[90%]">
               <button
                 onClick={() => handleChatClick(member.userId)}
@@ -59,7 +60,7 @@ export default function AllChats({ userID }) {
               </button>
             </li>
             
-          ))}
+          )):<p className="text-xs font-semibold leading-6 text-gray-500 ml-2">No chats found...</p>}
         </ul>
       ) : null}
     </>
